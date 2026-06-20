@@ -52,8 +52,8 @@
             TECNICA</span></button></li>
       <li><button class="hud-dot" data-section="2" aria-label="Progetti Photoshop"><span class="hud-label">03 —
             PHOTOSHOP PLANET</span></button></li>
-      <li><button class="hud-dot" data-section="3" aria-label="Progetti Web"><span class="hud-label">04 — ADOBE/HTML
-            PLANET</span></button></li>
+      <li><button class="hud-dot" data-section="3" aria-label="Progetti Web"><span class="hud-label">04 —
+            ADOBEILL&WEB PLANET</span></button></li>
       <li><button class="hud-dot" data-section="4" aria-label="Contatti"><span class="hud-label">05 — NUOVA
             FRONTIERA</span></button></li>
     </ul>
@@ -154,17 +154,12 @@
           <rect class="ship-part ship-engine-l" x="-18" y="-135" width="12" height="24" rx="2" />
           <rect class="ship-part ship-engine-c" x="-5" y="-138" width="10" height="28" rx="2" />
           <rect class="ship-part ship-engine-r" x="6" y="-135" width="12" height="24" rx="2" />
-          <!-- Fiamme motore (nascoste, animate in JS) -->
-          <g id="ship-flames" class="ship-flames" opacity="0">
-            <polygon points="0,-138 -8,-138 -2,-200 0,-190 2,-200 8,-138" fill="#E3131C" opacity="0.85" />
-            <polygon points="0,-138 -5,-138 0,-170 5,-138" fill="#EBC03F" opacity="0.7" />
-          </g>
+
           <!-- Dettagli vetro cockpit -->
           <ellipse class="ship-cockpit-glass" cx="0" cy="60" rx="10" ry="14" />
           <!-- Punti di aggancio callout (invisibili, usati come riferimento) -->
           <circle id="cp-cockpit" cx="-25" cy="30" r="3" class="ship-callout-pt" data-callout="c6" />
           <circle id="cp-wing-r" cx="60" cy="40" r="3" class="ship-callout-pt" data-callout="c2" />
-          <circle id="cp-fuso" cx="-10" cy="0" r="3" class="ship-callout-pt" data-callout="c4" />
           <circle id="cp-engine" cx="40" cy="-60" r="3" class="ship-callout-pt" data-callout="c1" />
           <circle id="cp-wing-l" cx="-75" cy="-10" r="3" class="ship-callout-pt" data-callout="c5" />
           <circle id="cp-boost" cx="10" cy="-90" r="3" class="ship-callout-pt" data-callout="c3" />
@@ -172,52 +167,45 @@
       </div>
 
       <!-- CALLOUT CARDS -->
-      <div class="callout-card callout-card--tr" id="c1" data-color="red">
+      <!-- CALLOUT CARDS -->
+      <div class="callout-card callout-card--tr" id="c1" style="--c-accent: #ffffff;">
         <div class="callout-accent"></div>
         <p class="callout-label">PROPULSIONE</p>
         <div class="callout-line callout-line--1" id="cline1" aria-hidden="true"></div>
-        <p class="callout-field">MOTIVAZIONE</p>
-        <p class="callout-value placeholder">— da compilare —</p>
+        <p class="callout-field">OBIETTIVO FUTURO</p>
+        <p class="callout-value">Il mio obiettivo è la fondazione di una piattaforma editoriale indipendente (blog/giornale) dedicata all'analisi critica di videogiochi, serie TV e opere multimediali, superando la logica del mero voto numerico.</p>
       </div>
 
-      <div class="callout-card callout-card--mr" id="c2" data-color="blue">
+      <div class="callout-card callout-card--mr" id="c2" style="--c-accent: #ebc13f;">
         <div class="callout-accent"></div>
-        <p class="callout-label">ALA DESTRA</p>
+        <p class="callout-label">RAGGIO D'AZIONE</p>
         <div class="callout-line callout-line--2" id="cline2" aria-hidden="true"></div>
-        <p class="callout-field">COMPETENZE</p>
-        <p class="callout-value placeholder">— da compilare —</p>
+        <p class="callout-field">SERVIZI & COLLABORAZIONI</p>
+        <p class="callout-value">Disponibile per collaborazioni in ambito editoriale e media digitali: stesura di recensioni dettagliate, monografie, analisi critiche e content creation per il settore gaming, manga e cinema.</p>
       </div>
 
-      <div class="callout-card callout-card--tc" id="c3" data-color="gold">
+      <div class="callout-card callout-card--tc" id="c3" style="--c-accent: #275325;">
         <div class="callout-accent"></div>
-        <p class="callout-label">STABILIZZATORI</p>
+        <p class="callout-label">ARMAMENTO TECNICO</p>
         <div class="callout-line callout-line--3" id="cline3" aria-hidden="true"></div>
-        <p class="callout-field">STRUMENTI</p>
-        <p class="callout-value placeholder">— da compilare —</p>
+        <p class="callout-field">SOFTWARE & TOOL</p>
+        <p class="callout-value">Padronanza operativa dei principali software di grafica e montaggio video, tra cui Adobe Illustrator, Photoshop, Movavi e CapCut, applicati alla post-produzione e al visual design.</p>
       </div>
 
-      <div class="callout-card callout-card--bc" id="c4" data-color="white">
+      <div class="callout-card callout-card--ml" id="c5" style="--c-accent: #2a2e6e;">
         <div class="callout-accent"></div>
-        <p class="callout-label">FUSOLIERA</p>
-        <div class="callout-line callout-line--4" id="cline4" aria-hidden="true"></div>
-        <p class="callout-field">OBIETTIVI</p>
-        <p class="callout-value placeholder">— da compilare —</p>
-      </div>
-
-      <div class="callout-card callout-card--ml" id="c5" data-color="green">
-        <div class="callout-accent"></div>
-        <p class="callout-label">ALA SINISTRA</p>
+        <p class="callout-label">CORE DELL'ANALISI</p>
         <div class="callout-line callout-line--5" id="cline5" aria-hidden="true"></div>
-        <p class="callout-field">COLLABORAZIONI</p>
-        <p class="callout-value placeholder">— da compilare —</p>
+        <p class="callout-field">APPROCCIO CRITICO</p>
+        <p class="callout-value">Esploro ciò che rende un'opera memorabile. La mia ricerca si concentra sullo studio approfondito di temi, stile, direzione artistica, atmosfera e impatto culturale profondo di ogni produzione.</p>
       </div>
 
-      <div class="callout-card callout-card--bl" id="c6" data-color="gold">
+      <div class="callout-card callout-card--bl" id="c6" style="--c-accent: #e30613;">
         <div class="callout-accent"></div>
-        <p class="callout-label">COCKPIT</p>
+        <p class="callout-label">SISTEMI DI BORDO</p>
         <div class="callout-line callout-line--6" id="cline6" aria-hidden="true"></div>
         <p class="callout-field">CHI SONO</p>
-        <p class="callout-value placeholder">— da compilare —</p>
+        <p class="callout-value">Maurizio – Creator, writer e media critic specializzato in editoria digitale e video editing per piattaforme social e YouTube.</p>
       </div>
 
       <!-- Dimensione tecnica (barra misura) -->
@@ -252,7 +240,7 @@
     <header class="planet-header">
       <div class="planet-header-inner">
         <p class="section-eyebrow eyebrow--red">DESTINAZIONE</p>
-        <h2 class="section-title title--planet-a">PHOTOSHOP <span class="accent-gold">PLANET</span></h2>
+        <h2 class="section-title title--planet-a">PhotoShop <span class="accent-gold">Planet</span></h2>
         <div class="planet-coords-bar" aria-hidden="true">
           <span class="pcoord">LAT: 23.8°N</span>
           <span class="pcoord">LON: 47.2°W</span>
@@ -272,10 +260,10 @@
       <article class="project-card project-card--a project-card--left" id="proj-a1">
         <div class="project-card-accent"></div>
         <div class="project-card-inner">
-          <p class="project-tag">PROGETTO 01</p>
-          <h3 class="project-title">— Da compilare —</h3>
+          <p class="project-tag">PHOTOSHOP</p>
+          <h3 class="project-title">Progetto 1: La Saga di Resistance</h3>
           <div class="project-photo">
-            <img src="assets/proj-a1.jpg" alt="Progetto A1" class="project-img" onerror="this.remove();" />
+            <img src="assets/proj-a1.png" alt="Resistance Tribute" class="project-img" onerror="this.remove();" />
             <div class="photo-placeholder">
               <span class="photo-x" aria-hidden="true"></span>
               <span class="photo-label">FOTO</span>
@@ -284,6 +272,8 @@
           <div class="placeholder-lines">
             <span></span><span></span><span></span><span class="short"></span>
           </div>
+          <p class="project-desc">Uno dei miei primi progetti complessi su Photoshop, fondamentale per padroneggiare il software. La sfida principale è stata fondere le tre anime della saga di Resistance unendo immagini con luci, ombre e tonalità differenti. Anche il logo è una combinazione dei tre titoli, legati alle diverse ambientazioni dei giochi.</p>
+          <p class="project-critique">Autocritica: Con il senno di poi, avrei lavorato meglio sul bilanciamento cromatico e reso il titolo più d'impatto</p>
         </div>
       </article>
 
@@ -304,7 +294,7 @@
         <!-- HUD tag sopra il pianeta -->
         <div class="planet-hud-tag">
           <span class="pit-label">DESTINAZIONE</span>
-          <span class="pit-val">PHOTOSHOP PLANET</span>
+          <span class="pit-val">PhotoShop Planet</span>
           <span class="pit-sub">CLASSE: DESERTICO · STATUS: ATTIVO</span>
         </div>
       </div>
@@ -313,10 +303,10 @@
       <article class="project-card project-card--a project-card--right" id="proj-a2">
         <div class="project-card-accent"></div>
         <div class="project-card-inner">
-          <p class="project-tag">PROGETTO 02</p>
-          <h3 class="project-title">— Da compilare —</h3>
+          <p class="project-tag">PHOTOSHOP</p>
+          <h3 class="project-title">Progetto 2: Tatsuki Fujimoto</h3>
           <div class="project-photo">
-            <img src="assets/proj-a2.jpg" alt="Progetto A2" class="project-img" onerror="this.remove();" />
+            <img src="assets/proj-a2.png" alt="Tatsuki Fujimoto Tribute" class="project-img" onerror="this.remove();" />
             <div class="photo-placeholder">
               <span class="photo-x" aria-hidden="true"></span>
               <span class="photo-label">FOTO</span>
@@ -325,6 +315,8 @@
           <div class="placeholder-lines">
             <span></span><span></span><span class="short"></span>
           </div>
+          <p class="project-desc">Creato come copertina YouTube in tributo al mangaka Tatsuki Fujimoto. Seguendo l'approccio già utilizzato per il progetto Resistance, ho voluto unire e valorizzare le sue opere migliori in un'unica composizione visiva.</p>
+          <p class="project-critique">Autocritica: Con il senno di poi, avrei dovuto curare meglio la fusione cromatica tra le diverse illustrazioni e decentrare meno la scritta "Grazie"</p>
         </div>
       </article>
 
@@ -350,7 +342,7 @@
     <header class="planet-header">
       <div class="planet-header-inner">
         <p class="section-eyebrow eyebrow--green">DESTINAZIONE</p>
-        <h2 class="section-title title--planet-b">ADOBE / HTML <span class="accent-green">PLANET</span></h2>
+        <h2 class="section-title title--planet-b">AdobeIll & Web <span class="accent-green">Planet</span></h2>
         <div class="planet-coords-bar" aria-hidden="true">
           <span class="pcoord">LAT: 51.4°S</span>
           <span class="pcoord">LON: 12.8°E</span>
@@ -369,10 +361,10 @@
       <article class="project-card project-card--b project-card--left" id="proj-b1">
         <div class="project-card-accent project-card-accent--b"></div>
         <div class="project-card-inner">
-          <p class="project-tag project-tag--b">PROGETTO 01</p>
-          <h3 class="project-title">— Da compilare —</h3>
+          <p class="project-tag project-tag--b">BRAND DESIGN</p>
+          <h3 class="project-title">Progetto 1: Loghi</h3>
           <div class="project-photo">
-            <img src="assets/proj-b1.jpg" alt="Progetto B1" class="project-img" onerror="this.remove();" />
+            <img src="assets/proj-b1.png" alt="Pelata Ludica Branding" class="project-img" onerror="this.remove();" />
             <div class="photo-placeholder photo-placeholder--b">
               <span class="photo-x" aria-hidden="true"></span>
               <span class="photo-label">FOTO</span>
@@ -381,6 +373,8 @@
           <div class="placeholder-lines">
             <span></span><span></span><span></span><span class="short"></span>
           </div>
+          <p class="project-desc">Sviluppato all'inizio del mio percorso nel graphic design, questo progetto unisce un esercizio di branding alla mia futura piattaforma di critica e informazione videoludica: Pelata Ludica. Il concept del logo gioca sull'elemento letterale del nome, partendo da bozze a mano e vettorializzazioni flat.</p>
+          <p class="project-critique">Autocritica: Essendo uno dei primi approcci al brand design, oggi ne riconosco i limiti e sento di poter esprimere il concetto con molta più maturità tecnica.</p>
         </div>
       </article>
 
@@ -399,7 +393,7 @@
         </div>
         <div class="planet-hud-tag planet-hud-tag--b">
           <span class="pit-label">DESTINAZIONE</span>
-          <span class="pit-val">ADOBE / HTML PLANET</span>
+          <span class="pit-val">AdobeIll&Web Planet</span>
           <span class="pit-sub">CLASSE: OCEANICO · STATUS: ATTIVO</span>
         </div>
       </div>
@@ -408,7 +402,7 @@
       <article class="project-card project-card--b project-card--right" id="proj-b2">
         <div class="project-card-accent project-card-accent--b"></div>
         <div class="project-card-inner">
-          <p class="project-tag project-tag--b">PROGETTO 02</p>
+          <p class="project-tag project-tag--b">BRAND DESIGN</p>
           <h3 class="project-title">— Da compilare —</h3>
           <div class="project-photo">
             <img src="assets/proj-b2.jpg" alt="Progetto B2" class="project-img" onerror="this.remove();" />
@@ -454,7 +448,11 @@
         <div class="chc-accent"></div>
         <div class="chc-row">
           <span class="chc-icon">✉</span>
-          <a href="mailto:tuo-email@example.com" class="chc-link">E-MAIL <span class="chc-val">— clicca per scrivere —</span></a>
+          <a href="mailto:mauriziocavani3@gmail.com" class="chc-link">E-MAIL <span class="chc-val">— mauriziocavani3@gmail.com —</span></a>
+        </div>
+        <div class="chc-row">
+          <span class="chc-icon">✉</span>
+          <a href="mailto:tarasbusiness99@gmail.com" class="chc-link">E-MAIL <span class="chc-val">— tarasbusiness99@gmail.com —</span></a>
         </div>
         <div class="chc-row">
           <span class="chc-icon">◈</span>
@@ -462,7 +460,7 @@
         </div>
         <div class="chc-row">
           <span class="chc-icon">◉</span>
-          <a href="https://t.me/tuo_social" target="_blank" class="chc-link">TELEGRAM <span class="chc-val">— @tuo_social —</span></a>
+          <a href="https://t.me/SuctionofSouls" target="_blank" class="chc-link">TELEGRAM <span class="chc-val">— @SuctionofSouls —</span></a>
         </div>
       </div>
     </div>

@@ -239,6 +239,12 @@ function hexRgb(hex) {
   },{passive:true});
 
   window._galaxyWarp = triggerWarp;
+  window._resetGalaxyWarp = function() {
+    phase = 'formed';
+    formT = 1;
+    warpT = 0;
+    triggered = false;
+  };
 })();
 
 // ─────────────────────────────────────────────
@@ -400,6 +406,10 @@ function goToSection(idx, goingBack) {
   if (idx === currentSection || isTransitioning) return;
   isTransitioning = true;
 
+  if (idx === 0 && window._resetGalaxyWarp) {
+    window._resetGalaxyWarp();
+  }
+
   const jump = () => {
     currentSection = idx;
     jumpToSection(idx);
@@ -472,6 +482,7 @@ const io=new IntersectionObserver(entries=>{
     if(e.isIntersecting&&e.intersectionRatio>0.55&&!isTransitioning){
       const idx=parseInt(e.target.dataset.index);
       currentSection=idx; updateHUD(idx);
+      if(idx===0&&window._resetGalaxyWarp) window._resetGalaxyWarp();
     }
   });
 },{threshold:0.55});
@@ -490,8 +501,8 @@ sections.forEach(s=>io.observe(s));
   svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:15;overflow:visible;';
   wrap.insertBefore(svg,wrap.firstChild);
 
-  const CMAP={c1:'#E3131C',c2:'#2C2C6E',c3:'#EBC03F',c4:'rgba(200,200,200,0.6)',c5:'#009640',c6:'#EBC03F'};
-  const CPMAP={c1:'cp-engine',c2:'cp-wing-r',c3:'cp-boost',c4:'cp-fuso',c5:'cp-wing-l',c6:'cp-cockpit'};
+  const CMAP={c1:'#ffffff',c2:'#ebc13f',c3:'#275325',c5:'#2a2e6e',c6:'#e30613'};
+  const CPMAP={c1:'cp-engine',c2:'cp-wing-r',c3:'cp-boost',c5:'cp-wing-l',c6:'cp-cockpit'};
 
   function drawLines(){
     svg.innerHTML='';
@@ -660,10 +671,8 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
       <div class="lb-content">
         <p class="lb-tag"></p>
         <h2 class="lb-title"></h2>
-        <div class="lb-lines">
-          <span></span><span></span><span></span><span class="short"></span>
-        </div>
-        <p class="lb-desc-note">Il testo e la foto verranno aggiunti in seguito.</p>
+        <div class="lb-description"></div>
+        <div class="lb-critique"></div>
       </div>
     </div>
   `;
@@ -691,11 +700,37 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
     lb.querySelector('.lb-tag').textContent   = tag;
     lb.querySelector('.lb-title').textContent = title;
     lb.querySelector('.lb-tag').style.color   = isB ? '#009640' : '#E3131C';
+
+    // Recupera descrizione e autocritica
+    const desc = card.querySelector('.project-desc')?.textContent || '';
+    const critique = card.querySelector('.project-critique')?.textContent || '';
+
+    const descEl = lb.querySelector('.lb-description');
+    const critiqueEl = lb.querySelector('.lb-critique');
+
+    if (desc) {
+      descEl.textContent = desc;
+      descEl.style.display = 'block';
+    } else {
+      descEl.textContent = 'Descrizione in arrivo...';
+      descEl.style.display = 'block';
+    }
+
+    if (critique) {
+      critiqueEl.textContent = critique;
+      critiqueEl.style.display = 'block';
+    } else {
+      critiqueEl.textContent = '';
+      critiqueEl.style.display = 'none';
+    }
+
     lb.classList.add('lb-open');
+    document.body.classList.add('lightbox-open');
     document.body.style.overflow='hidden';
   }
   function closeLightbox(){
     lb.classList.remove('lb-open');
+    document.body.classList.remove('lightbox-open');
     document.body.style.overflow='';
   }
 
@@ -764,6 +799,7 @@ if(btsBtn){
   btsBtn.addEventListener('click',()=>{
     if(isTransitioning) return;
     isTransitioning=true;
+    if(window._resetGalaxyWarp) window._resetGalaxyWarp();
     transitionBackward(()=>{
       currentSection=0;
       jumpToSection(0);
