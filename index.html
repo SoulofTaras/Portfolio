@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="it" class="loading">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pelata Ludica — Galaxy Portfolio</title>
+  <meta name="description"
+    content="Portfolio di Pelata Ludica — Designer, Creator e Developer. Un viaggio attraverso lo spazio tra progetti Photoshop, web e molto altro." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       LOADER OVERLAY
+  ═══════════════════════════════════════════════ -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <!-- Crosshair minimalista -->
+      <div class="loader-crosshair">
+        <div class="loader-ch-circle"></div>
+        <div class="loader-ch-h"></div>
+        <div class="loader-ch-v"></div>
+        <div class="loader-ch-dot"></div>
+      </div>
+      <p class="loader-name">PELATA<span class="loader-name-accent">LUDICA</span></p>
+      <div class="loader-bar"><span id="loader-fill"></span></div>
+      <p class="loader-status" id="loader-status">INIZIALIZZAZIONE SISTEMI…</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       CURSOR PERSONALIZZATO
+  ═══════════════════════════════════════════════ -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       HUD PROGRESS — barra laterale sezioni
+  ═══════════════════════════════════════════════ -->
+  <nav id="hud-nav" aria-label="Navigazione sezioni">
+    <ul>
+      <li><button class="hud-dot active" data-section="0" aria-label="Copertina"><span class="hud-label">01 —
+            GALASSIA</span></button></li>
+      <li><button class="hud-dot" data-section="1" aria-label="Biografia"><span class="hud-label">02 — SCHEDA
+            TECNICA</span></button></li>
+      <li><button class="hud-dot" data-section="2" aria-label="Progetti Photoshop"><span class="hud-label">03 —
+            PHOTOSHOP PLANET</span></button></li>
+      <li><button class="hud-dot" data-section="3" aria-label="Progetti Web"><span class="hud-label">04 — ADOBE/HTML
+            PLANET</span></button></li>
+      <li><button class="hud-dot" data-section="4" aria-label="Contatti"><span class="hud-label">05 — NUOVA
+            FRONTIERA</span></button></li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════
+       SCROLL INDICATOR
+  ═══════════════════════════════════════════════ -->
+  <div id="scroll-hint" aria-hidden="true">
+    <span class="scroll-hint-text">SCROLL</span>
+    <div class="scroll-hint-arrow"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       WARP TRANSITION OVERLAY
+  ═══════════════════════════════════════════════ -->
+  <div id="warp-overlay" aria-hidden="true">
+    <canvas id="warp-canvas"></canvas>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SEZIONE 1 — GALASSIA / COPERTINA
+  ═══════════════════════════════════════════════ -->
+  <section id="s-galaxy" class="section section--galaxy" data-index="0" aria-label="Copertina">
+    <canvas id="galaxy-canvas"></canvas>
+
+    <div class="galaxy-content">
+      <div class="galaxy-scan-line" aria-hidden="true"></div>
+      <p class="galaxy-eyebrow" id="galaxy-eyebrow">SISTEMA STELLARE — ALFA-7</p>
+      <h1 class="galaxy-title" id="galaxy-title">
+        <span class="galaxy-title-word" data-word="GALAXY">GALAXY</span>
+        <span class="galaxy-title-word" data-word="PORTFOLIO">PORTFOLIO</span>
+      </h1>
+      <p class="galaxy-sub" id="galaxy-sub">PELATA LUDICA</p>
+      <div class="galaxy-coords" aria-hidden="true">
+        <span id="coord-x">X: 4.2847</span>
+        <span class="coord-sep">·</span>
+        <span id="coord-y">Y: -1.9203</span>
+        <span class="coord-sep">·</span>
+        <span id="coord-z">Z: 0.7731</span>
+      </div>
+      <button id="launch-btn" class="launch-btn" aria-label="Avvia il viaggio — scorri in basso">
+        <span class="launch-btn-ring" aria-hidden="true"></span>
+        <span class="launch-btn-ring launch-btn-ring--2" aria-hidden="true"></span>
+        <span class="launch-btn-icon" aria-hidden="true">⬡</span>
+        <span class="launch-btn-text">ENTRA NELLA GALASSIA</span>
+      </button>
+    </div>
+
+    <div class="galaxy-corner galaxy-corner--tl" aria-hidden="true"><span>01</span></div>
+    <div class="galaxy-corner galaxy-corner--tr" aria-hidden="true"><span>SISTEMA: ONLINE</span></div>
+    <div class="galaxy-corner galaxy-corner--bl" aria-hidden="true"><span>ROTTA TRACCIATA</span></div>
+    <div class="galaxy-corner galaxy-corner--br" aria-hidden="true"><span>2026</span></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SEZIONE 2 — BIOGRAFIA / SCHEDA TECNICA
+  ═══════════════════════════════════════════════ -->
+  <section id="s-bio" class="section section--bio" data-index="1" aria-label="Biografia">
+    <div class="bio-starfield" aria-hidden="true"></div>
+    <div class="bio-grid" aria-hidden="true"></div>
+
+    <header class="bio-header">
+      <div class="bio-header-left">
+        <p class="section-eyebrow">IL VETTORE</p>
+        <h2 class="section-title">SCHEDA <span class="accent-red">TECNICA</span></h2>
+      </div>
+      <div class="bio-header-right">
+        <span class="section-number">02</span>
+      </div>
+    </header>
+
+    <!-- Navicella SVG centrale con callout -->
+    <div class="bio-ship-wrap">
+      <!-- Asse orizzontale -->
+      <div class="bio-axis bio-axis--h" aria-hidden="true"></div>
+      <div class="bio-axis bio-axis--v" aria-hidden="true"></div>
+
+      <!-- NAVICELLA SVG -->
+      <div class="bio-ship-container" id="bio-ship">
+        <svg id="ship-svg" viewBox="-120 -130 240 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Immagine personalizzata navicella (auto-rimossa se assente in assets/navicella.png) -->
+          <image href="assets/navicella.png" x="-120" y="-130" width="240" height="260" class="ship-custom-img"
+            onerror="this.remove();" />
+          <!-- Corpo principale -->
+          <polygon class="ship-part ship-body" points="0,130 32,48 24,-96 13,-128 0,-130 -13,-128 -24,-96 -32,48" />
+          <!-- Linea cockpit -->
+          <polygon class="ship-part ship-cockpit-line" points="0,88 16,52 0,32 -16,52" />
+          <!-- Ala sinistra -->
+          <polygon class="ship-part ship-wing-l" points="-24,20 -116,-42 -105,-80 -24,-26" />
+          <!-- Ala destra -->
+          <polygon class="ship-part ship-wing-r" points="24,20 116,-42 105,-80 24,-26" />
+          <!-- Propulsore sinistro -->
+          <polygon class="ship-part ship-boost-l" points="-13,-100 -52,-130 -44,-148 -13,-120" />
+          <!-- Propulsore destro -->
+          <polygon class="ship-part ship-boost-r" points="13,-100 52,-130 44,-148 13,-120" />
+          <!-- Motori -->
+          <rect class="ship-part ship-engine-l" x="-18" y="-135" width="12" height="24" rx="2" />
+          <rect class="ship-part ship-engine-c" x="-5" y="-138" width="10" height="28" rx="2" />
+          <rect class="ship-part ship-engine-r" x="6" y="-135" width="12" height="24" rx="2" />
+          <!-- Fiamme motore (nascoste, animate in JS) -->
+          <g id="ship-flames" class="ship-flames" opacity="0">
+            <polygon points="0,-138 -8,-138 -2,-200 0,-190 2,-200 8,-138" fill="#E3131C" opacity="0.85" />
+            <polygon points="0,-138 -5,-138 0,-170 5,-138" fill="#EBC03F" opacity="0.7" />
+          </g>
+          <!-- Dettagli vetro cockpit -->
+          <ellipse class="ship-cockpit-glass" cx="0" cy="60" rx="10" ry="14" />
+          <!-- Punti di aggancio callout (invisibili, usati come riferimento) -->
+          <circle id="cp-cockpit" cx="-25" cy="30" r="3" class="ship-callout-pt" data-callout="c6" />
+          <circle id="cp-wing-r" cx="60" cy="40" r="3" class="ship-callout-pt" data-callout="c2" />
+          <circle id="cp-fuso" cx="-10" cy="0" r="3" class="ship-callout-pt" data-callout="c4" />
+          <circle id="cp-engine" cx="40" cy="-60" r="3" class="ship-callout-pt" data-callout="c1" />
+          <circle id="cp-wing-l" cx="-75" cy="-10" r="3" class="ship-callout-pt" data-callout="c5" />
+          <circle id="cp-boost" cx="10" cy="-90" r="3" class="ship-callout-pt" data-callout="c3" />
+        </svg>
+      </div>
+
+      <!-- CALLOUT CARDS -->
+      <div class="callout-card callout-card--tr" id="c1" data-color="red">
+        <div class="callout-accent"></div>
+        <p class="callout-label">PROPULSIONE</p>
+        <div class="callout-line callout-line--1" id="cline1" aria-hidden="true"></div>
+        <p class="callout-field">MOTIVAZIONE</p>
+        <p class="callout-value placeholder">— da compilare —</p>
+      </div>
+
+      <div class="callout-card callout-card--mr" id="c2" data-color="blue">
+        <div class="callout-accent"></div>
+        <p class="callout-label">ALA DESTRA</p>
+        <div class="callout-line callout-line--2" id="cline2" aria-hidden="true"></div>
+        <p class="callout-field">COMPETENZE</p>
+        <p class="callout-value placeholder">— da compilare —</p>
+      </div>
+
+      <div class="callout-card callout-card--tc" id="c3" data-color="gold">
+        <div class="callout-accent"></div>
+        <p class="callout-label">STABILIZZATORI</p>
+        <div class="callout-line callout-line--3" id="cline3" aria-hidden="true"></div>
+        <p class="callout-field">STRUMENTI</p>
+        <p class="callout-value placeholder">— da compilare —</p>
+      </div>
+
+      <div class="callout-card callout-card--bc" id="c4" data-color="white">
+        <div class="callout-accent"></div>
+        <p class="callout-label">FUSOLIERA</p>
+        <div class="callout-line callout-line--4" id="cline4" aria-hidden="true"></div>
+        <p class="callout-field">OBIETTIVI</p>
+        <p class="callout-value placeholder">— da compilare —</p>
+      </div>
+
+      <div class="callout-card callout-card--ml" id="c5" data-color="green">
+        <div class="callout-accent"></div>
+        <p class="callout-label">ALA SINISTRA</p>
+        <div class="callout-line callout-line--5" id="cline5" aria-hidden="true"></div>
+        <p class="callout-field">COLLABORAZIONI</p>
+        <p class="callout-value placeholder">— da compilare —</p>
+      </div>
+
+      <div class="callout-card callout-card--bl" id="c6" data-color="gold">
+        <div class="callout-accent"></div>
+        <p class="callout-label">COCKPIT</p>
+        <div class="callout-line callout-line--6" id="cline6" aria-hidden="true"></div>
+        <p class="callout-field">CHI SONO</p>
+        <p class="callout-value placeholder">— da compilare —</p>
+      </div>
+
+      <!-- Dimensione tecnica (barra misura) -->
+      <div class="bio-measure" aria-hidden="true">
+        <div class="bio-measure-bar"></div>
+        <span class="bio-measure-label">∅ 240 UM</span>
+      </div>
+    </div>
+
+    <!-- Fiamme bottom (scroll trigger) -->
+    <div class="bio-launch-hint" aria-hidden="true">
+      <span>SCROLL PER PARTIRE</span>
+      <div class="bio-launch-flames" id="bio-launch-flames"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SEZIONE 3 — PROGETTI A: PHOTOSHOP PLANET
+  ═══════════════════════════════════════════════ -->
+  <section id="s-planet-a" class="section section--planet section--planet-a" data-index="2"
+    aria-label="Progetti Photoshop">
+    <canvas id="planet-a-canvas" class="planet-canvas"></canvas>
+
+    <div class="planet-hud" aria-hidden="true">
+      <div class="planet-hud-corner tl"></div>
+      <div class="planet-hud-corner tr"></div>
+      <div class="planet-hud-corner bl"></div>
+      <div class="planet-hud-corner br"></div>
+      <div class="planet-scan-line"></div>
+    </div>
+
+    <header class="planet-header">
+      <div class="planet-header-inner">
+        <p class="section-eyebrow eyebrow--red">DESTINAZIONE</p>
+        <h2 class="section-title title--planet-a">PHOTOSHOP <span class="accent-gold">PLANET</span></h2>
+        <div class="planet-coords-bar" aria-hidden="true">
+          <span class="pcoord">LAT: 23.8°N</span>
+          <span class="pcoord">LON: 47.2°W</span>
+          <span class="pcoord pcoord--status">● ORBITA STABILIZZATA</span>
+        </div>
+      </div>
+      <span class="section-number section-number--a">03</span>
+    </header>
+
+    <!-- Scena pianeta: pianeta al centro, card ai lati -->
+    <div class="planet-scene" id="scene-a">
+
+      <!-- SVG connettori (linee pianeta→card) -->
+      <svg class="planet-connectors" id="connectors-a" aria-hidden="true"></svg>
+
+      <!-- CARD SINISTRA -->
+      <article class="project-card project-card--a project-card--left" id="proj-a1">
+        <div class="project-card-accent"></div>
+        <div class="project-card-inner">
+          <p class="project-tag">PROGETTO 01</p>
+          <h3 class="project-title">— Da compilare —</h3>
+          <div class="project-photo">
+            <img src="assets/proj-a1.jpg" alt="Progetto A1" class="project-img" onerror="this.remove();" />
+            <div class="photo-placeholder">
+              <span class="photo-x" aria-hidden="true"></span>
+              <span class="photo-label">FOTO</span>
+            </div>
+          </div>
+          <div class="placeholder-lines">
+            <span></span><span></span><span></span><span class="short"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- PIANETA CENTRALE -->
+      <div class="planet-visual planet-visual--center" id="planet-a-visual">
+        <div class="planet-sphere planet-sphere--a" id="planet-sphere-a">
+          <div class="planet-glow planet-glow--a"></div>
+          <img src="assets/planet-a.png" class="planet-custom-img" alt="Photoshop Planet" onerror="this.remove();" />
+          <div class="planet-surface planet-surface--a"></div>
+          <div class="planet-ring planet-ring--a" aria-hidden="true"></div>
+          <div class="planet-atmosphere" aria-hidden="true"></div>
+        </div>
+        <div class="asteroid-orbit asteroid-orbit--a" aria-hidden="true">
+          <div class="asteroid ast-1"></div>
+          <div class="asteroid ast-2"></div>
+          <div class="asteroid ast-3"></div>
+        </div>
+        <!-- HUD tag sopra il pianeta -->
+        <div class="planet-hud-tag">
+          <span class="pit-label">DESTINAZIONE</span>
+          <span class="pit-val">PHOTOSHOP PLANET</span>
+          <span class="pit-sub">CLASSE: DESERTICO · STATUS: ATTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD DESTRA -->
+      <article class="project-card project-card--a project-card--right" id="proj-a2">
+        <div class="project-card-accent"></div>
+        <div class="project-card-inner">
+          <p class="project-tag">PROGETTO 02</p>
+          <h3 class="project-title">— Da compilare —</h3>
+          <div class="project-photo">
+            <img src="assets/proj-a2.jpg" alt="Progetto A2" class="project-img" onerror="this.remove();" />
+            <div class="photo-placeholder">
+              <span class="photo-x" aria-hidden="true"></span>
+              <span class="photo-label">FOTO</span>
+            </div>
+          </div>
+          <div class="placeholder-lines">
+            <span></span><span></span><span class="short"></span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="section-number-bg" aria-hidden="true">03</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SEZIONE 4 — PROGETTI B: ADOBE/HTML PLANET
+  ═══════════════════════════════════════════════ -->
+  <section id="s-planet-b" class="section section--planet section--planet-b" data-index="3" aria-label="Progetti Web">
+    <canvas id="planet-b-canvas" class="planet-canvas"></canvas>
+
+    <div class="planet-hud" aria-hidden="true">
+      <div class="planet-hud-corner tl"></div>
+      <div class="planet-hud-corner tr"></div>
+      <div class="planet-hud-corner bl"></div>
+      <div class="planet-hud-corner br"></div>
+      <div class="planet-scan-line"></div>
+    </div>
+
+    <header class="planet-header">
+      <div class="planet-header-inner">
+        <p class="section-eyebrow eyebrow--green">DESTINAZIONE</p>
+        <h2 class="section-title title--planet-b">ADOBE / HTML <span class="accent-green">PLANET</span></h2>
+        <div class="planet-coords-bar" aria-hidden="true">
+          <span class="pcoord">LAT: 51.4°S</span>
+          <span class="pcoord">LON: 12.8°E</span>
+          <span class="pcoord pcoord--status pcoord--green">● ORBITA STABILIZZATA</span>
+        </div>
+      </div>
+      <span class="section-number section-number--b">04</span>
+    </header>
+
+    <!-- Scena pianeta B: stesso schema, colori diversi -->
+    <div class="planet-scene" id="scene-b">
+
+      <svg class="planet-connectors" id="connectors-b" aria-hidden="true"></svg>
+
+      <!-- CARD SINISTRA -->
+      <article class="project-card project-card--b project-card--left" id="proj-b1">
+        <div class="project-card-accent project-card-accent--b"></div>
+        <div class="project-card-inner">
+          <p class="project-tag project-tag--b">PROGETTO 01</p>
+          <h3 class="project-title">— Da compilare —</h3>
+          <div class="project-photo">
+            <img src="assets/proj-b1.jpg" alt="Progetto B1" class="project-img" onerror="this.remove();" />
+            <div class="photo-placeholder photo-placeholder--b">
+              <span class="photo-x" aria-hidden="true"></span>
+              <span class="photo-label">FOTO</span>
+            </div>
+          </div>
+          <div class="placeholder-lines">
+            <span></span><span></span><span></span><span class="short"></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- PIANETA CENTRALE -->
+      <div class="planet-visual planet-visual--center" id="planet-b-visual">
+        <div class="planet-sphere planet-sphere--b" id="planet-sphere-b">
+          <div class="planet-glow planet-glow--b"></div>
+          <img src="assets/planet-b.png" class="planet-custom-img" alt="Adobe / HTML Planet" onerror="this.remove();" />
+          <div class="planet-surface planet-surface--b"></div>
+          <div class="planet-ring planet-ring--b" aria-hidden="true"></div>
+          <div class="planet-atmosphere planet-atmosphere--b" aria-hidden="true"></div>
+        </div>
+        <div class="asteroid-orbit asteroid-orbit--b" aria-hidden="true">
+          <div class="asteroid ast-4"></div>
+          <div class="asteroid ast-5"></div>
+        </div>
+        <div class="planet-hud-tag planet-hud-tag--b">
+          <span class="pit-label">DESTINAZIONE</span>
+          <span class="pit-val">ADOBE / HTML PLANET</span>
+          <span class="pit-sub">CLASSE: OCEANICO · STATUS: ATTIVO</span>
+        </div>
+      </div>
+
+      <!-- CARD DESTRA -->
+      <article class="project-card project-card--b project-card--right" id="proj-b2">
+        <div class="project-card-accent project-card-accent--b"></div>
+        <div class="project-card-inner">
+          <p class="project-tag project-tag--b">PROGETTO 02</p>
+          <h3 class="project-title">— Da compilare —</h3>
+          <div class="project-photo">
+            <img src="assets/proj-b2.jpg" alt="Progetto B2" class="project-img" onerror="this.remove();" />
+            <div class="photo-placeholder photo-placeholder--b">
+              <span class="photo-x" aria-hidden="true"></span>
+              <span class="photo-label">FOTO</span>
+            </div>
+          </div>
+          <div class="placeholder-lines">
+            <span></span><span></span><span class="short"></span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="section-number-bg" aria-hidden="true">04</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SEZIONE 5 — CONTATTI: NUOVA FRONTIERA (COCKPIT)
+  ═══════════════════════════════════════════════ -->
+  <section id="s-contacts" class="section section--contacts" data-index="4" aria-label="Contatti">
+    <canvas id="warp-stars-canvas"></canvas>
+
+    <!-- Cornice cockpit -->
+    <div class="cockpit-frame" aria-hidden="true">
+      <svg id="cockpit-svg" viewBox="0 0 1200 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Montante sinistro -->
+        <path class="cockpit-strut" d="M0,0 L60,120 L60,350 L0,400" />
+        <path class="cockpit-strut" d="M60,120 L140,170 L140,350" />
+        <!-- Montante destro -->
+        <path class="cockpit-strut" d="M1200,0 L1140,120 L1140,350 L1200,400" />
+        <path class="cockpit-strut" d="M1140,120 L1060,170 L1060,350" />
+        <!-- Bordo superiore -->
+        <path class="cockpit-frame-top"
+          d="M0,0 L60,120 L140,170 L360,190 L600,180 L840,190 L1060,170 L1140,120 L1200,0" />
+        <!-- Rivetti -->
+        <circle class="cockpit-rivet" cx="60" cy="120" r="5" />
+        <circle class="cockpit-rivet" cx="60" cy="200" r="4" />
+        <circle class="cockpit-rivet" cx="60" cy="280" r="4" />
+        <circle class="cockpit-rivet" cx="1140" cy="120" r="5" />
+        <circle class="cockpit-rivet" cx="1140" cy="200" r="4" />
+        <circle class="cockpit-rivet" cx="1140" cy="280" r="4" />
+        <!-- Angoli decorativi -->
+        <rect class="cockpit-corner-deco" x="0" y="0" width="50" height="50" />
+        <rect class="cockpit-corner-deco" x="1150" y="0" width="50" height="50" />
+      </svg>
+    </div>
+
+    <!-- Cruscotto inferiore -->
+    <div class="dashboard" aria-hidden="true">
+      <!-- Pannello sinistro HUD -->
+      <div class="dash-panel dash-panel--left">
+        <div class="dash-label">SISTEMA</div>
+        <div class="dash-gauge">
+          <div class="gauge-ring"></div>
+          <div class="gauge-inner"></div>
+          <div class="gauge-val">97%</div>
+        </div>
+        <div class="dash-bars">
+          <div class="dash-bar-row">
+            <span class="dash-bar-label">WARP</span>
+            <div class="dash-bar-track">
+              <div class="dash-bar-fill" style="width:92%;background:#009640"></div>
+            </div>
+          </div>
+          <div class="dash-bar-row">
+            <span class="dash-bar-label">FUEL</span>
+            <div class="dash-bar-track">
+              <div class="dash-bar-fill" style="width:68%;background:#EBC03F"></div>
+            </div>
+          </div>
+          <div class="dash-bar-row">
+            <span class="dash-bar-label">HULL</span>
+            <div class="dash-bar-track">
+              <div class="dash-bar-fill" style="width:85%;background:#E3131C"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Joystick centrale -->
+      <div class="dash-joystick">
+        <div class="joystick-shaft"></div>
+        <div class="joystick-head"></div>
+        <!-- Pulsanti -->
+        <div class="dash-buttons">
+          <div class="dash-btn dash-btn--red"></div>
+          <div class="dash-btn dash-btn--green"></div>
+          <div class="dash-btn dash-btn--gold"></div>
+          <div class="dash-btn dash-btn--blue"></div>
+          <div class="dash-btn dash-btn--white"></div>
+        </div>
+        <!-- Schermini laterali -->
+        <div class="dash-mini-screen dash-mini-screen--l"></div>
+        <div class="dash-mini-screen dash-mini-screen--r"></div>
+      </div>
+
+      <!-- Pannello destro — CONTATTI -->
+      <div class="dash-panel dash-panel--right">
+        <div class="dash-label">DESTINAZIONE</div>
+        <div class="contact-screen">
+          <p class="contact-screen-title">NUOVA FRONTIERA</p>
+          <div class="contact-item" id="contact-email">
+            <span class="contact-icon">✉</span>
+            <span class="contact-val placeholder">— email —</span>
+          </div>
+          <div class="contact-item" id="contact-social">
+            <span class="contact-icon">◈</span>
+            <span class="contact-val placeholder">— social —</span>
+          </div>
+          <div class="contact-item" id="contact-altro">
+            <span class="contact-icon">◉</span>
+            <span class="contact-val placeholder">— altro —</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenuto centrale — info frontiera -->
+    <div class="contacts-center">
+      <div class="contacts-target-ring" aria-hidden="true">
+        <div class="ctr-ring ctr-ring--1"></div>
+        <div class="ctr-ring ctr-ring--2"></div>
+        <div class="ctr-ring ctr-ring--3"></div>
+        <div class="ctr-crosshair ctr-crosshair--h" aria-hidden="true"></div>
+        <div class="ctr-crosshair ctr-crosshair--v" aria-hidden="true"></div>
+      </div>
+      <div class="contacts-hud-text">
+        <p class="hud-blink" aria-hidden="true">▶ NUOVA DESTINAZIONE ACQUISITA ◀</p>
+        <h2 class="contacts-title">CONTATTI</h2>
+        <p class="contacts-sub">COORDINARE LA ROTTA</p>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="contacts-header">
+      <p class="section-eyebrow eyebrow--gold">NUOVA FRONTIERA</p>
+      <div class="contacts-speed-bar" aria-hidden="true">
+        <span>VELOCITÀ: LUCE</span>
+        <span class="speed-sep">·</span>
+        <span>ROTTA: NUOVA DESTINAZIONE</span>
+      </div>
+    </header>
+
+    <!-- Torna all'inizio -->
+    <button id="back-to-start" class="back-to-start" aria-label="Torna all'inizio">
+      <span class="bts-icon" aria-hidden="true">◀◀</span>
+      <span>TORNA ALL'INIZIO</span>
+    </button>
+
+    <div class="section-number-bg section-number-bg--contacts" aria-hidden="true">05</div>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
