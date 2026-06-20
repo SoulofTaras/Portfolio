@@ -755,20 +755,6 @@ document.addEventListener('mousemove', e=>{
   draw();
 })();
 
-// ─────────────────────────────────────────────
-// 13. DASHBOARD animate in
-// ─────────────────────────────────────────────
-(function(){
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting) $$('.dash-bar-fill').forEach((bar,i)=>{
-        const w=bar.style.width; bar.style.width='0%';
-        setTimeout(()=>{bar.style.transition='width 0.9s ease-out';bar.style.width=w;},i*160+300);
-      });
-    });
-  },{threshold:0.3});
-  const cs=$('s-contacts'); if(cs) obs.observe(cs);
-})();
 
 // ─────────────────────────────────────────────
 // 14. BACK TO START

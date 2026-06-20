@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pelata Ludica — Galaxy Portfolio</title>
+  <title>Galaxy Portfolio</title>
   <meta name="description"
-    content="Portfolio di Pelata Ludica — Designer, Creator e Developer. Un viaggio attraverso lo spazio tra progetti Photoshop, web e molto altro." />
+    content="Portfolio — Designer, Creator e Developer. Un viaggio attraverso lo spazio tra progetti Photoshop, web e molto altro." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -29,7 +29,7 @@
         <div class="loader-ch-v"></div>
         <div class="loader-ch-dot"></div>
       </div>
-      <p class="loader-name">PELATA<span class="loader-name-accent">LUDICA</span></p>
+      <p class="loader-name">GALAXY<span class="loader-name-accent">PORTFOLIO</span></p>
       <div class="loader-bar"><span id="loader-fill"></span></div>
       <p class="loader-status" id="loader-status">INIZIALIZZAZIONE SISTEMI…</p>
     </div>
@@ -87,7 +87,7 @@
         <span class="galaxy-title-word" data-word="GALAXY">GALAXY</span>
         <span class="galaxy-title-word" data-word="PORTFOLIO">PORTFOLIO</span>
       </h1>
-      <p class="galaxy-sub" id="galaxy-sub">PELATA LUDICA</p>
+      <p class="galaxy-sub" id="galaxy-sub">PORTFOLIO</p>
       <div class="galaxy-coords" aria-hidden="true">
         <span id="coord-x">X: 4.2847</span>
         <span class="coord-sep">·</span>
@@ -434,102 +434,7 @@
   <section id="s-contacts" class="section section--contacts" data-index="4" aria-label="Contatti">
     <canvas id="warp-stars-canvas"></canvas>
 
-    <!-- Cornice cockpit -->
-    <div class="cockpit-frame" aria-hidden="true">
-      <svg id="cockpit-svg" viewBox="0 0 1200 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Montante sinistro -->
-        <path class="cockpit-strut" d="M0,0 L60,120 L60,350 L0,400" />
-        <path class="cockpit-strut" d="M60,120 L140,170 L140,350" />
-        <!-- Montante destro -->
-        <path class="cockpit-strut" d="M1200,0 L1140,120 L1140,350 L1200,400" />
-        <path class="cockpit-strut" d="M1140,120 L1060,170 L1060,350" />
-        <!-- Bordo superiore -->
-        <path class="cockpit-frame-top"
-          d="M0,0 L60,120 L140,170 L360,190 L600,180 L840,190 L1060,170 L1140,120 L1200,0" />
-        <!-- Rivetti -->
-        <circle class="cockpit-rivet" cx="60" cy="120" r="5" />
-        <circle class="cockpit-rivet" cx="60" cy="200" r="4" />
-        <circle class="cockpit-rivet" cx="60" cy="280" r="4" />
-        <circle class="cockpit-rivet" cx="1140" cy="120" r="5" />
-        <circle class="cockpit-rivet" cx="1140" cy="200" r="4" />
-        <circle class="cockpit-rivet" cx="1140" cy="280" r="4" />
-        <!-- Angoli decorativi -->
-        <rect class="cockpit-corner-deco" x="0" y="0" width="50" height="50" />
-        <rect class="cockpit-corner-deco" x="1150" y="0" width="50" height="50" />
-      </svg>
-    </div>
-
-    <!-- Cruscotto inferiore -->
-    <div class="dashboard" aria-hidden="true">
-      <!-- Pannello sinistro HUD -->
-      <div class="dash-panel dash-panel--left">
-        <div class="dash-label">SISTEMA</div>
-        <div class="dash-gauge">
-          <div class="gauge-ring"></div>
-          <div class="gauge-inner"></div>
-          <div class="gauge-val">97%</div>
-        </div>
-        <div class="dash-bars">
-          <div class="dash-bar-row">
-            <span class="dash-bar-label">WARP</span>
-            <div class="dash-bar-track">
-              <div class="dash-bar-fill" style="width:92%;background:#009640"></div>
-            </div>
-          </div>
-          <div class="dash-bar-row">
-            <span class="dash-bar-label">FUEL</span>
-            <div class="dash-bar-track">
-              <div class="dash-bar-fill" style="width:68%;background:#EBC03F"></div>
-            </div>
-          </div>
-          <div class="dash-bar-row">
-            <span class="dash-bar-label">HULL</span>
-            <div class="dash-bar-track">
-              <div class="dash-bar-fill" style="width:85%;background:#E3131C"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Joystick centrale -->
-      <div class="dash-joystick">
-        <div class="joystick-shaft"></div>
-        <div class="joystick-head"></div>
-        <!-- Pulsanti -->
-        <div class="dash-buttons">
-          <div class="dash-btn dash-btn--red"></div>
-          <div class="dash-btn dash-btn--green"></div>
-          <div class="dash-btn dash-btn--gold"></div>
-          <div class="dash-btn dash-btn--blue"></div>
-          <div class="dash-btn dash-btn--white"></div>
-        </div>
-        <!-- Schermini laterali -->
-        <div class="dash-mini-screen dash-mini-screen--l"></div>
-        <div class="dash-mini-screen dash-mini-screen--r"></div>
-      </div>
-
-      <!-- Pannello destro — CONTATTI -->
-      <div class="dash-panel dash-panel--right">
-        <div class="dash-label">DESTINAZIONE</div>
-        <div class="contact-screen">
-          <p class="contact-screen-title">NUOVA FRONTIERA</p>
-          <div class="contact-item" id="contact-email">
-            <span class="contact-icon">✉</span>
-            <span class="contact-val placeholder">— email —</span>
-          </div>
-          <div class="contact-item" id="contact-social">
-            <span class="contact-icon">◈</span>
-            <span class="contact-val placeholder">— social —</span>
-          </div>
-          <div class="contact-item" id="contact-altro">
-            <span class="contact-icon">◉</span>
-            <span class="contact-val placeholder">— altro —</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contenuto centrale — info frontiera -->
+    <!-- Contenuto centrale — info frontiera e contatti HUD -->
     <div class="contacts-center">
       <div class="contacts-target-ring" aria-hidden="true">
         <div class="ctr-ring ctr-ring--1"></div>
@@ -542,6 +447,23 @@
         <p class="hud-blink" aria-hidden="true">▶ NUOVA DESTINAZIONE ACQUISITA ◀</p>
         <h2 class="contacts-title">CONTATTI</h2>
         <p class="contacts-sub">COORDINARE LA ROTTA</p>
+      </div>
+
+      <!-- CARTOLINA HUD CONTATTI SLEEK -->
+      <div class="contacts-hud-card">
+        <div class="chc-accent"></div>
+        <div class="chc-row">
+          <span class="chc-icon">✉</span>
+          <a href="mailto:tuo-email@example.com" class="chc-link">E-MAIL <span class="chc-val">— clicca per scrivere —</span></a>
+        </div>
+        <div class="chc-row">
+          <span class="chc-icon">◈</span>
+          <a href="https://github.com/SoulofTaras" target="_blank" class="chc-link">GITHUB <span class="chc-val">— github.com/SoulofTaras —</span></a>
+        </div>
+        <div class="chc-row">
+          <span class="chc-icon">◉</span>
+          <a href="https://t.me/tuo_social" target="_blank" class="chc-link">TELEGRAM <span class="chc-val">— @tuo_social —</span></a>
+        </div>
       </div>
     </div>
 
