@@ -171,8 +171,57 @@ body.hovering #cursor-ring { width: 48px; height: 48px; border-color: var(--c-go
   position: fixed; right: 24px; top: 50%; z-index: 800;
   transform: translateY(-50%);
   display: flex; flex-direction: column;
+  pointer-events: none;
 }
 #hud-nav ul { list-style: none; display: flex; flex-direction: column; gap: 20px; align-items: flex-end; }
+#hud-nav ul li,
+#hud-nav .hud-dot,
+#hud-nav .auto-nav-toggle { pointer-events: auto; }
+
+
+.auto-nav-toggle {
+  margin-top: 44px;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--c-gold);
+  border: 1px solid rgba(235, 192, 63, 0.25);
+  background: rgba(10, 10, 20, 0.6);
+  padding: 6px 12px;
+  border-radius: 2px;
+  cursor: none;
+  transition: all 0.3s var(--ease-smooth);
+}
+.auto-nav-toggle:hover {
+  border-color: var(--c-gold);
+  background: rgba(235, 192, 63, 0.1);
+  box-shadow: 0 0 10px rgba(235, 192, 63, 0.2);
+}
+.ant-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c-green);
+  box-shadow: 0 0 8px var(--c-green);
+  display: inline-block;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.auto-nav-toggle.paused .ant-dot {
+  background: var(--c-gold);
+  box-shadow: 0 0 8px var(--c-gold);
+  animation: ant-blink 1s step-end infinite;
+}
+.auto-nav-toggle.off .ant-dot {
+  background: var(--c-red);
+  box-shadow: 0 0 8px var(--c-red);
+}
+@keyframes ant-blink {
+  50% { opacity: 0.2; }
+}
 
 .hud-dot {
   position: relative;
@@ -386,6 +435,141 @@ body.hovering #cursor-ring { width: 48px; height: 48px; border-color: var(--c-go
 @keyframes fade-in-down { to{opacity:1;transform:translateY(0)} }
 @keyframes fade-in-up   { to{opacity:1;transform:translateY(0)} }
 @keyframes title-in     { to{opacity:1;transform:scaleX(1)} }
+
+/* Wormhole portals */
+.wormhole {
+  position: absolute;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0;
+  pointer-events: auto;
+  transform: translateY(-50%) scale(0.8);
+  animation: wh-fade-in 1s 1.8s var(--ease-smooth) forwards;
+}
+.wormhole--left {
+  left: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.wormhole--right {
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@keyframes wh-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+.wormhole-portal {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: radial-gradient(circle, rgba(13,14,20,0.9) 0%, rgba(5,5,8,1) 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s var(--ease-smooth), border-color 0.4s;
+}
+
+.wormhole-preview {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  filter: grayscale(80%) contrast(120%);
+  transition: opacity 0.4s, filter 0.4s;
+}
+/* Default fallback color background if no preview image yet */
+.wormhole-preview:not([style*="background-image"]) {
+  background: radial-gradient(circle, rgba(44,44,110,0.3) 0%, transparent 70%);
+}
+
+.wormhole-ring {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 2px dashed rgba(235, 192, 63, 0.45);
+  pointer-events: none;
+  animation: wh-rotate 20s linear infinite;
+  transition: border-color 0.4s;
+}
+
+.wormhole-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(44,44,110,0.3), inset 0 0 15px rgba(227,19,28,0.25);
+  pointer-events: none;
+  transition: box-shadow 0.4s;
+}
+
+.wormhole:hover .wormhole-portal {
+  transform: scale(1.08);
+  border-color: rgba(235, 192, 63, 0.6);
+}
+.wormhole:hover .wormhole-preview {
+  opacity: 0.75;
+  filter: grayscale(20%) contrast(100%);
+}
+.wormhole:hover .wormhole-ring {
+  animation-duration: 4s;
+  border-color: var(--c-gold);
+}
+.wormhole:hover .wormhole-glow {
+  box-shadow: 0 0 35px rgba(235, 192, 63, 0.5), inset 0 0 20px rgba(235,192,63,0.3);
+}
+
+.wormhole-label {
+  font-family: var(--font-mono);
+  text-align: center;
+  margin-top: 14px;
+  pointer-events: none;
+}
+.wh-category {
+  display: block;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.4);
+}
+.wh-title {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--c-white);
+  margin-top: 4px;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.wormhole:hover .wh-title {
+  color: var(--c-gold);
+  text-shadow: 0 0 8px rgba(235,192,63,0.5);
+}
+
+@keyframes wh-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsività Wormhole */
+@media (max-width: 1024px) {
+  .wormhole--left { left: 2%; }
+  .wormhole--right { right: 2%; }
+}
+@media (max-width: 768px) {
+  .wormhole {
+    display: none !important;
+  }
+}
 
 /* ══════════════════════════════════════════════════════════════
    SEZIONE 2 — BIOGRAFIA
@@ -1168,3 +1352,252 @@ body.lightbox-open #cursor-ring {
   .section-number-bg { font-size: 6rem; }
   .lb-panel { width: 96vw; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   OVERLAY PANELS (EXTRA WORMHOLES)
+══════════════════════════════════════════════════════════════ */
+.overlay-panel {
+  position: fixed; inset: 0; z-index: 8500;
+  display: none; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-smooth);
+}
+.overlay-panel.active {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(5, 5, 8, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.overlay-card {
+  position: relative; z-index: 10;
+  width: min(1000px, 94vw);
+  max-height: 90vh;
+  background: rgba(13, 14, 20, 0.95);
+  border: 1px solid rgba(44, 44, 110, 0.45);
+  padding: 30px 35px;
+  border-radius: 4px;
+  box-shadow: 0 0 50px rgba(44, 44, 110, 0.3);
+  overflow-y: auto;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.4s var(--ease-back);
+}
+.overlay-panel.active .overlay-card {
+  transform: scale(1) translateY(0);
+}
+.overlay-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(to bottom, var(--c-gold), var(--c-red));
+}
+
+/* Scrollbar personalizzata per overlay-card */
+.overlay-card::-webkit-scrollbar { width: 4px; }
+.overlay-card::-webkit-scrollbar-track { background: transparent; }
+.overlay-card::-webkit-scrollbar-thumb { background: rgba(235, 192, 63, 0.3); border-radius: 2px; }
+
+.overlay-close {
+  position: absolute; top: 16px; right: 20px; z-index: 25;
+  font-size: 2rem; color: rgba(240, 240, 240, 0.6);
+  background: transparent; border: none; cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+  line-height: 1;
+}
+.overlay-close:hover {
+  color: var(--c-gold);
+  transform: scale(1.1);
+}
+
+.overlay-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.overlay-header {
+  border-bottom: 1px solid rgba(44, 44, 110, 0.25);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+.overlay-eyebrow {
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.3em;
+  color: var(--c-gold);
+}
+.overlay-title {
+  font-family: var(--font-display); font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+  font-weight: 900; letter-spacing: 0.08em; color: var(--c-white);
+  margin-top: 4px;
+}
+
+.overlay-body {
+  font-family: var(--font-body); font-size: 0.82rem; line-height: 1.55;
+  color: rgba(240, 240, 240, 0.8);
+}
+.overlay-body p {
+  margin-bottom: 14px;
+}
+
+/* SLIDER */
+.slider-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.707; /* Proporzioni standard foglio portrait (A4/PDF) */
+  border: 1px solid rgba(235, 192, 63, 0.25);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.slider-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.slider-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.slider-slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none; /* Disabilita interazione diretta per proteggere il download */
+}
+.slider-nav {
+  position: absolute; top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  background: rgba(13, 14, 20, 0.85);
+  border: 1px solid rgba(235, 192, 63, 0.35);
+  color: var(--c-gold);
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 15;
+}
+.slider-nav:hover {
+  background: var(--c-gold);
+  color: var(--c-dark);
+  border-color: var(--c-gold);
+  box-shadow: 0 0 15px rgba(235, 192, 63, 0.45);
+}
+.slider-nav--prev { left: 12px; }
+.slider-nav--next { right: 12px; }
+
+.slider-indicator {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--c-gold);
+  letter-spacing: 0.2em;
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+/* Responsive grid per overlays */
+@media (max-width: 768px) {
+  .overlay-content-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .overlay-card {
+    padding: 20px;
+    max-height: 95vh;
+  }
+}
+
+/* Cursor fix inside overlays */
+.overlay-panel,
+.overlay-panel * {
+  cursor: auto;
+}
+.overlay-close,
+.overlay-return-btn,
+.slider-nav,
+.overlay-panel button,
+.overlay-panel a {
+  cursor: pointer !important;
+}
+
+/* Back/Return button inside overlays */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: rgba(235, 192, 63, 0.7);
+  border: 1px solid rgba(235, 192, 63, 0.25);
+  padding: 9px 18px;
+  background: rgba(10, 10, 20, 0.6);
+  transition: color 0.3s, border-color 0.3s, background 0.3s;
+}
+.back-btn:hover {
+  color: var(--c-gold);
+  border-color: var(--c-gold);
+  background: rgba(235, 192, 63, 0.08);
+  cursor: pointer;
+}
+
+/* Skills list (used in CV overlay) */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  padding: 5px 10px;
+  background: rgba(44, 44, 110, 0.12);
+  border: 1px solid rgba(44, 44, 110, 0.3);
+  color: rgba(240, 240, 240, 0.7);
+}
+
+/* Terminal box inside overlay */
+.terminal-box {
+  background: rgba(5, 5, 8, 0.6);
+  border: 1px solid rgba(235, 192, 63, 0.25);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+}
+.terminal-line {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0;
+  letter-spacing: 0.1em;
+}
+.t-label {
+  color: rgba(255, 255, 255, 0.4);
+  min-width: 90px;
+  flex-shrink: 0;
+}
+.t-val {
+  color: var(--c-white);
+}
+

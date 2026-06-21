@@ -664,6 +664,7 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
       <button class="lb-close" aria-label="Chiudi">&times;</button>
       <div class="lb-img">
         <img src="" alt="Dettaglio Progetto" class="lb-real-img" style="display:none;" />
+        <video src="" autoplay loop muted playsinline controls class="lb-real-video" style="display:none; width:100%; height:100%; object-fit:cover;"></video>
         <div class="lb-photo-placeholder">
           <span class="photo-label">FOTO</span>
         </div>
@@ -685,15 +686,28 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
     
     const cardImg = card.querySelector('.project-img');
     const lbImg = lb.querySelector('.lb-real-img');
+    const lbVideo = lb.querySelector('.lb-real-video');
     const lbPlaceholder = lb.querySelector('.lb-photo-placeholder');
     
     if (cardImg) {
-      lbImg.src = cardImg.src;
-      lbImg.style.display = 'block';
+      const isVideo = cardImg.tagName.toLowerCase() === 'video';
+      if (isVideo) {
+        lbVideo.src = cardImg.src;
+        lbVideo.style.display = 'block';
+        lbImg.src = '';
+        lbImg.style.display = 'none';
+      } else {
+        lbImg.src = cardImg.src;
+        lbImg.style.display = 'block';
+        lbVideo.src = '';
+        lbVideo.style.display = 'none';
+      }
       lbPlaceholder.style.display = 'none';
     } else {
       lbImg.src = '';
       lbImg.style.display = 'none';
+      lbVideo.src = '';
+      lbVideo.style.display = 'none';
       lbPlaceholder.style.display = 'flex';
     }
     
@@ -729,6 +743,8 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
     document.body.style.overflow='hidden';
   }
   function closeLightbox(){
+    const lbVideo = lb.querySelector('.lb-real-video');
+    if (lbVideo) lbVideo.src = '';
     lb.classList.remove('lb-open');
     document.body.classList.remove('lightbox-open');
     document.body.style.overflow='';
@@ -833,4 +849,241 @@ if(btsBtn){
 // ─────────────────────────────────────────────
 window.addEventListener('resize', () => { jumpToSection(currentSection); });
 
-// NON impostare scroll-snap via JS: è già in CSS (html + .section)
+// ─────────────────────────────────────────────
+// 17. WORMHOLE OVERLAYS & CAROUSELS SYSTEM
+// ─────────────────────────────────────────────
+(function(){
+  let activeOverlay = null;
+  let sliderIdeaIndex = 0;
+  const sliderIdeaCount = 5;
+  let sliderCertIndex = 0;
+  const sliderCertCount = 6;
+
+  function updateSlider(type) {
+    if (type === 'idea') {
+      const track = document.querySelector('#slider-idea-wrapper .slider-track');
+      const indicator = $('indicator-idea');
+      if (track) {
+        track.style.transform = `translateX(-${sliderIdeaIndex * 100}%)`;
+      }
+      if (indicator) {
+        indicator.textContent = `PAGINA ${sliderIdeaIndex + 1} / ${sliderIdeaCount}`;
+      }
+    } else if (type === 'certificati') {
+      const track = document.querySelector('#slider-certificati-wrapper .slider-track');
+      const indicator = $('indicator-certificati');
+      if (track) {
+        track.style.transform = `translateX(-${sliderCertIndex * 100}%)`;
+      }
+      if (indicator) {
+        indicator.textContent = `ATTESTATO ${sliderCertIndex + 1} / ${sliderCertCount}`;
+      }
+    }
+  }
+
+  function slidePrev(type) {
+    if (type === 'idea') {
+      sliderIdeaIndex = (sliderIdeaIndex - 1 + sliderIdeaCount) % sliderIdeaCount;
+    } else {
+      sliderCertIndex = (sliderCertIndex - 1 + sliderCertCount) % sliderCertCount;
+    }
+    updateSlider(type);
+  }
+
+  function slideNext(type) {
+    if (type === 'idea') {
+      sliderIdeaIndex = (sliderIdeaIndex + 1) % sliderIdeaCount;
+    } else {
+      sliderCertIndex = (sliderCertIndex + 1) % sliderCertCount;
+    }
+    updateSlider(type);
+  }
+
+  function openOverlay(id) {
+    const panel = $(id);
+    if (!panel) return;
+    
+    // Reset index
+    if (id === 'overlay-idea') {
+      sliderIdeaIndex = 0;
+      updateSlider('idea');
+    } else {
+      sliderCertIndex = 0;
+      updateSlider('certificati');
+    }
+    
+    panel.style.display = 'flex';
+    setTimeout(() => {
+      panel.classList.add('active');
+      activeOverlay = id;
+      document.body.classList.add('lightbox-open');
+      document.body.style.overflow = 'hidden';
+    }, 15);
+  }
+
+  function closeOverlay() {
+    if (!activeOverlay) return;
+    const panel = $(activeOverlay);
+    if (!panel) return;
+    
+    panel.classList.remove('active');
+    document.body.classList.remove('lightbox-open');
+    document.body.style.overflow = '';
+    
+    setTimeout(() => {
+      panel.style.display = 'none';
+      activeOverlay = null;
+    }, 400);
+  }
+
+  function triggerOpenWarp(targetId) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    transitionForward(() => {
+      openOverlay(targetId);
+      isTransitioning = false;
+    });
+  }
+
+  function triggerCloseWarp() {
+    if (isTransitioning || !activeOverlay) return;
+    isTransitioning = true;
+    transitionBackward(() => {
+      closeOverlay();
+      isTransitioning = false;
+    });
+  }
+
+  // Bind wormholes click
+  const whs = $$('.wormhole');
+  whs.forEach(wh => {
+    wh.addEventListener('click', e => {
+      e.preventDefault();
+      const targetHash = wh.getAttribute('href'); // e.g. "#overlay-idea"
+      if (targetHash && targetHash.startsWith('#')) {
+        triggerOpenWarp(targetHash.substring(1));
+      }
+    });
+  });
+
+  // Bind close buttons and backdrop clicks
+  document.addEventListener('click', e => {
+    if (e.target.closest('.overlay-close') || e.target.closest('.overlay-backdrop') || e.target.closest('.overlay-return-btn')) {
+      e.preventDefault();
+      triggerCloseWarp();
+    }
+  });
+
+  // Bind slider arrow clicks
+  const bindSliderNav = (panelId, type) => {
+    const p = $(panelId);
+    if (!p) return;
+    const prevBtn = p.querySelector('.slider-nav--prev');
+    const nextBtn = p.querySelector('.slider-nav--next');
+    if (prevBtn) prevBtn.addEventListener('click', () => slidePrev(type));
+    if (nextBtn) nextBtn.addEventListener('click', () => slideNext(type));
+  };
+  bindSliderNav('overlay-idea', 'idea');
+  bindSliderNav('overlay-certificati', 'certificati');
+
+  // Keyboard navigation and ESC key close support
+  document.addEventListener('keydown', e => {
+    if (!activeOverlay) return;
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      triggerCloseWarp();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const type = (activeOverlay === 'overlay-idea') ? 'idea' : 'certificati';
+      slidePrev(type);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const type = (activeOverlay === 'overlay-idea') ? 'idea' : 'certificati';
+      slideNext(type);
+    }
+  });
+})();
+
+// ─────────────────────────────────────────────
+// 18. AUTOMATIC NAVIGATION SYSTEM (AUTO PLAY)
+// ─────────────────────────────────────────────
+(function(){
+  const toggleBtn = $('auto-nav-toggle');
+  if (!toggleBtn) return;
+
+  let isAutoNavEnabled = true;
+  let autoNavIdleTime = 0;
+  let autoNavPaused = false;
+
+  // Toggle button click listener
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    isAutoNavEnabled = !isAutoNavEnabled;
+    autoNavIdleTime = 0;
+    updateToggleUI();
+  });
+
+  function updateToggleUI() {
+    const dot = toggleBtn.querySelector('.ant-dot');
+    const txt = toggleBtn.querySelector('.ant-text');
+    
+    toggleBtn.classList.remove('paused', 'off');
+    
+    if (!isAutoNavEnabled) {
+      toggleBtn.classList.add('off');
+      if (txt) txt.textContent = 'AUTO NAV: OFF';
+    } else if (autoNavPaused || document.body.classList.contains('lightbox-open')) {
+      toggleBtn.classList.add('paused');
+      if (txt) txt.textContent = 'AUTO NAV: PAUSE';
+    } else {
+      if (txt) txt.textContent = 'AUTO NAV: ON';
+    }
+  }
+
+  // Reset idle timer on user activity
+  const resetIdle = () => {
+    autoNavIdleTime = 0;
+  };
+
+  const activities = ['mousemove', 'mousedown', 'wheel', 'keydown', 'touchstart'];
+  activities.forEach(act => {
+    window.addEventListener(act, resetIdle, { passive: true });
+  });
+
+  // Pause auto-navigation when hovering over interactive elements
+  const interactiveSelectors = '.project-card, .callout-card, #hud-nav, .auto-nav-toggle, .wormhole, #lightbox, .launch-btn, .back-to-start';
+  
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(interactiveSelectors)) {
+      autoNavPaused = true;
+      updateToggleUI();
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(interactiveSelectors)) {
+      autoNavPaused = false;
+      updateToggleUI();
+    }
+  });
+
+  // Main tick interval
+  setInterval(() => {
+    const isLightboxOpen = document.body.classList.contains('lightbox-open');
+    updateToggleUI();
+
+    if (!isAutoNavEnabled || autoNavPaused || isLightboxOpen || isTransitioning) {
+      return;
+    }
+
+    autoNavIdleTime++;
+    if (autoNavIdleTime >= 12) {
+      autoNavIdleTime = 0;
+      // Go to next section, cycle back to 0 at the end
+      const nextSec = (currentSection + 1) % sections.length;
+      
+      goToSection(nextSec, nextSec < currentSection);
+    }
+  }, 1000);
+})();
