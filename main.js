@@ -60,7 +60,7 @@ function hexRgb(hex) {
   let mx = window.innerWidth/2, my = window.innerHeight/2, rx = mx, ry = my;
   document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
   (function loop() {
-    rx = lerp(rx, mx, 0.13); ry = lerp(ry, my, 0.13);
+    rx = lerp(rx, mx, 0.22); ry = lerp(ry, my, 0.22);
     dot.style.left  = mx + 'px'; dot.style.top   = my + 'px';
     ring.style.left = rx + 'px'; ring.style.top  = ry + 'px';
     requestAnimationFrame(loop);
@@ -272,7 +272,7 @@ function getNavOverlay() {
   return _navOverlay;
 }
 
-// Crea particelle su canvas overlay
+// Crea speed-lines su canvas overlay — effetto hyperspace
 function runParticleTransition(goingBack, onMid) {
   const ov  = getNavOverlay();
   const cnv = document.createElement('canvas');
@@ -282,69 +282,64 @@ function runParticleTransition(goingBack, onMid) {
   ov.appendChild(cnv);
   const ctx = cnv.getContext('2d');
   const W = cnv.width, H = cnv.height;
-  const cx = W/2, cy = H/2;
 
-  const TOTAL = 560; // ms
+  const TOTAL = 420; // ms — più veloce e pulito
   let start = null;
 
-  // Genera particelle
-  const N = 90;
-  const particles = Array.from({length: N}, (_, i) => {
-    const ang   = rand(0, PI2);
-    const speed = rand(2.5, 7.5);
-    const col   = Math.random() < 0.65 ? 'rgba(240,240,240,' : 'rgba(' + hexRgb(BRAND[i%BRAND.length]).join(',') + ',';
-    const size  = rand(0.8, 3);
-    // Forward: partono vicino al centro e vanno fuori
-    // Backward: partono lontani e vanno verso il centro
-    const startDist = goingBack ? rand(Math.min(W,H)*0.25, Math.min(W,H)*0.52) : rand(0, Math.min(W,H)*0.06);
-    return { ang, speed, col, size, startDist, alpha: rand(0.2, 0.7) };
+  // Speed-lines orizzontali
+  const dir = goingBack ? -1 : 1;
+  const N   = 26;
+  const lines = Array.from({length: N}, (_, i) => {
+    const col = BRAND[i % BRAND.length];
+    const isWhite = Math.random() < 0.45;
+    return {
+      y:      rand(0, H),
+      len:    rand(W * 0.12, W * 0.52),
+      startX: goingBack ? rand(W * 0.2, W) : rand(-W * 0.5, W * 0.2),
+      speed:  rand(W * 1.8, W * 4.2) * dir,
+      h:      rand(0.4, 2.4),
+      col:    isWhite ? 'rgba(240,240,255,' : `rgba(${hexRgb(col).join(',')},`,
+      alpha:  rand(0.3, 0.7)
+    };
   });
 
   function draw(now) {
     if (!start) start = now;
     const elapsed = now - start;
-    const t = clamp(elapsed / TOTAL, 0, 1);
+    const t     = clamp(elapsed / TOTAL, 0, 1);
+    const phase = Math.sin(t * Math.PI);
 
-    ctx.clearRect(0,0,W,H);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = `rgba(5,5,8,${phase * 0.82})`;
+    ctx.fillRect(0, 0, W, H);
 
-    // Sfondo semi-trasparente — max opacity 0.72, curva campana
-    const bgAlpha = Math.sin(t * Math.PI) * 0.72;
-    ctx.fillStyle = `rgba(8,9,10,${bgAlpha})`;
-    ctx.fillRect(0,0,W,H);
-
-    // Particelle
-    const phase = Math.sin(t * Math.PI); // 0→1→0
-    particles.forEach(p => {
-      const dist = goingBack
-        ? p.startDist - p.speed * elapsed * 0.055 // verso centro
-        : p.startDist + p.speed * elapsed * 0.055; // verso fuori
-
-      if (dist < 0 || dist > Math.min(W,H)) return;
-
-      const px = cx + Math.cos(p.ang) * dist;
-      const py = cy + Math.sin(p.ang) * dist;
-      const alpha = p.alpha * phase;
-      const r = p.size * (0.5 + 0.5 * phase);
-
-      // Scia dietro alla particella
-      const tailLen = p.speed * 4.5 * phase;
-      const tailDir = goingBack ? 1 : -1;
-      const tx = cx + Math.cos(p.ang) * (dist + tailLen * tailDir);
-      const ty = cy + Math.sin(p.ang) * (dist + tailLen * tailDir);
-
-      const col = p.col + (alpha * 0.5) + ')';
-      const grd = ctx.createLinearGradient(tx, ty, px, py);
-      grd.addColorStop(0, p.col + '0)');
-      grd.addColorStop(1, p.col + alpha + ')');
-      ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(px, py);
-      ctx.strokeStyle = grd; ctx.lineWidth = r * 0.8; ctx.stroke();
-
-      // Puntino finale
-      ctx.beginPath(); ctx.arc(px, py, r, 0, PI2);
-      ctx.fillStyle = p.col + alpha + ')'; ctx.fill();
+    lines.forEach(l => {
+      const x  = l.startX + l.speed * (elapsed / 1000);
+      const x1 = goingBack ? x + l.len : x;
+      const x2 = goingBack ? x         : x + l.len;
+      const a  = l.alpha * phase;
+      const grd = ctx.createLinearGradient(x1, 0, x2, 0);
+      grd.addColorStop(0,    l.col + '0)');
+      grd.addColorStop(0.25, l.col + (a * 0.6) + ')');
+      grd.addColorStop(0.65, l.col + a + ')');
+      grd.addColorStop(1,    l.col + '0)');
+      ctx.beginPath();
+      ctx.moveTo(x1, l.y);
+      ctx.lineTo(x2, l.y);
+      ctx.strokeStyle = grd;
+      ctx.lineWidth   = l.h;
+      ctx.stroke();
     });
 
-    // Chiama mid a meta'
+    if (phase > 0.65) {
+      const fa  = (phase - 0.65) / 0.35 * 0.2;
+      const grd = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.min(W, H) * 0.4);
+      grd.addColorStop(0, `rgba(235,192,63,${fa})`);
+      grd.addColorStop(1, `rgba(235,192,63,0)`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, W, H);
+    }
+
     if (t >= 0.46 && !draw._mid) { draw._mid = true; onMid(); }
 
     if (elapsed < TOTAL) requestAnimationFrame(draw);
@@ -357,6 +352,7 @@ function runParticleTransition(goingBack, onMid) {
 
 function transitionForward (onMid) { runParticleTransition(false, onMid); }
 function transitionBackward(onMid) { runParticleTransition(true,  onMid); }
+
 
 
 // ─────────────────────────────────────────────
