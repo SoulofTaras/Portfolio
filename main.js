@@ -427,6 +427,9 @@ hudDots.forEach((d,i) => d.addEventListener('click', ()=>goToSection(i, i<curren
 
 let wheelAccum = 0;
 window.addEventListener('wheel', e => {
+  // Non navigare se un overlay wormhole o il lightbox progetto è aperto
+  if (window._activeOverlay) return;
+  if (document.body.classList.contains('lightbox-open') || document.documentElement.classList.contains('lightbox-open')) return;
   if (isTransitioning) {
     if (e.cancelable) e.preventDefault();
     return;
@@ -453,6 +456,7 @@ window.addEventListener('touchmove', e => {
 
 window.addEventListener('touchend', e => {
   if (isTransitioning) return;
+  if (window._activeOverlay) return;
   const dy = touchY0 - e.changedTouches[0].clientY;
   if (Math.abs(dy) > 50) {
     const dir = dy > 0 ? 1 : -1;
@@ -735,6 +739,7 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
     }
 
     lb.classList.add('lb-open');
+    document.documentElement.classList.add('lightbox-open');
     document.body.classList.add('lightbox-open');
     document.body.style.overflow='hidden';
   }
@@ -742,6 +747,7 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
     const lbVideo = lb.querySelector('.lb-real-video');
     if (lbVideo) lbVideo.src = '';
     lb.classList.remove('lb-open');
+    document.documentElement.classList.remove('lightbox-open');
     document.body.classList.remove('lightbox-open');
     document.body.style.overflow='';
   }
@@ -752,7 +758,22 @@ drawPlanetConnectors('scene-b','connectors-b','#009640');
   });
   lb.querySelector('.lb-close').addEventListener('click', closeLightbox);
   lb.querySelector('.lb-backdrop').addEventListener('click', closeLightbox);
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Blocca lo scroll della wheel dentro il lightbox (evita che cambi sezione)
+  lb.addEventListener('wheel', e => {
+    // Se non stiamo scrollando dentro la descrizione (lb-content), previeni lo scroll di default
+    if (!e.target.closest('.lb-content')) {
+      e.preventDefault();
+    }
+    e.stopPropagation();
+  }, { passive: false });
+  lb.addEventListener('touchmove', e => {
+    if (!e.target.closest('.lb-content')) {
+      e.preventDefault();
+    }
+    e.stopPropagation();
+  }, { passive: false });
 })();
 
 // ─────────────────────────────────────────────
@@ -802,6 +823,111 @@ document.addEventListener('mousemove', e=>{
   draw();
 })();
 
+// ─────────────────────────────────────────────
+// 13b. CONTACT LINKS — mailto apertura client mail
+// ─────────────────────────────────────────────
+(function () {
+  // Funzione per copiare testo negli appunti (async per catturare errori sincroni)
+  async function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        // Gara con un timeout di 150ms per evitare che l'API moderna si blocchi (es. in browser headless)
+        await Promise.race([
+          navigator.clipboard.writeText(text),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 150))
+        ]);
+        return true;
+      } catch (err) {
+        console.warn('Modern clipboard API failed or timed out, trying fallback...', err);
+      }
+    }
+    
+    // Fallback con textarea
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    let success = false;
+    try {
+      success = document.execCommand('copy');
+    } catch (err) {
+      console.error('Fallback copy failed', err);
+    }
+    document.body.removeChild(el);
+    if (!success) {
+      throw new Error('Fallback copy failed');
+    }
+    return true;
+  }
+
+  // Mostra toast personalizzato
+  function showToast(message) {
+    let toast = document.getElementById('contacts-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'contacts-toast';
+      toast.className = 'contacts-toast';
+      toast.innerHTML = `
+        <span class="contacts-toast-icon">▶</span>
+        <span class="contacts-toast-msg"></span>
+      `;
+      document.body.appendChild(toast);
+    }
+    toast.querySelector('.contacts-toast-msg').textContent = message;
+    toast.classList.add('show');
+    
+    // Rimuovi dopo 3.5 secondi
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3500);
+  }
+
+  // Gestione click sui link contatti
+  document.querySelectorAll('a.chc-row').forEach(link => {
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('mailto:')) {
+        // Previeni e stoppa immediatamente per evitare anomalie del browser
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Estrai l'indirizzo email
+        const email = href.replace('mailto:', '').split('?')[0];
+        
+        // Copia negli appunti con gestione sicura degli errori
+        copyToClipboard(email)
+          .then(() => {
+            showToast(`EMAIL COPIATA NEGLI APPUNTI: ${email}`);
+          })
+          .catch(err => {
+            console.warn('Clipboard copy failed:', err);
+            showToast(`APERTURA E-MAIL: ${email}`);
+          });
+
+        // Apri in una nuova scheda
+        try {
+          const newWindow = window.open(href, '_blank');
+          if (newWindow) {
+            setTimeout(() => {
+              try {
+                if (newWindow.location.href === 'about:blank' || newWindow.location.href.startsWith('mailto:')) {
+                  newWindow.close();
+                }
+              } catch(err) {
+                // Cross-origin atteso se ha aperto webmail (es. Gmail)
+              }
+            }, 1200);
+          }
+        } catch (openErr) {
+          console.warn('Window open failed:', openErr);
+        }
+      }
+    });
+  });
+})();
 
 // ─────────────────────────────────────────────
 // 14. BACK TO START
@@ -850,6 +976,8 @@ window.addEventListener('resize', () => { jumpToSection(currentSection); });
 // ─────────────────────────────────────────────
 (function(){
   let activeOverlay = null;
+  // Esponi globalmente per il wheel handler
+  window._activeOverlay = null;
   let sliderIdeaIndex = 0;
   const sliderIdeaCount = 5;
   let sliderCertIndex = 0;
@@ -912,6 +1040,8 @@ window.addEventListener('resize', () => { jumpToSection(currentSection); });
     setTimeout(() => {
       panel.classList.add('active');
       activeOverlay = id;
+      window._activeOverlay = id;
+      document.documentElement.classList.add('lightbox-open');
       document.body.classList.add('lightbox-open');
       document.body.style.overflow = 'hidden';
     }, 15);
@@ -923,8 +1053,10 @@ window.addEventListener('resize', () => { jumpToSection(currentSection); });
     if (!panel) return;
     
     panel.classList.remove('active');
+    document.documentElement.classList.remove('lightbox-open');
     document.body.classList.remove('lightbox-open');
     document.body.style.overflow = '';
+    window._activeOverlay = null;
     
     setTimeout(() => {
       panel.style.display = 'none';

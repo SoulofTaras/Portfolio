@@ -756,7 +756,35 @@ body.hovering #cursor-ring { width: 48px; height: 48px; border-color: var(--c-go
   filter: drop-shadow(0 0 20px rgba(74,53,227,0.4));
 }
 
-/* ── CALLOUT CARDS ── */
+/* ── CALLOUT COLUMN CONTAINERS (flex, no-overlap guarantee) ── */
+.callout-col {
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  width: clamp(155px, 19vw, 215px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 12px;
+  z-index: 20;
+  pointer-events: none;
+}
+.callout-col--right { right: 4%; }
+.callout-col--left  { left:  4%; }
+
+/* Cards within columns: relative, full width, pointer-events restored */
+.callout-col .callout-card {
+  position: relative;
+  width: 100%;
+  max-height: none;
+  pointer-events: all;
+  opacity: 0; transform: scale(0.85);
+  transition: opacity 0.6s, transform 0.6s var(--ease-back);
+}
+.callout-col .callout-card.visible { opacity: 1; transform: scale(1); }
+.callout-col .callout-card.visible:hover { transform: scale(1.05); z-index: 30; transition: transform 0.25s var(--ease-back); }
+
+/* ── CALLOUT CARDS (standalone absolute, for --tc, --bc) ── */
 .callout-card {
   position: absolute; z-index: 20;
   width: clamp(155px, 19vw, 215px);
@@ -771,16 +799,20 @@ body.hovering #cursor-ring { width: 48px; height: 48px; border-color: var(--c-go
   transition: opacity 0.6s, transform 0.6s var(--ease-back);
 }
 .callout-card.visible { opacity: 1; transform: scale(1); }
+/* Hover zoom */
+.callout-card.visible:hover { transform: scale(1.06); z-index: 30; transition: transform 0.25s var(--ease-back); }
+.callout-card--tc.visible:hover { transform: translateX(-50%) scale(1.06); }
+.callout-card--bc.visible:hover { transform: translateX(-50%) scale(1.06); }
 
-/* Position presets — tutti top-based per evitare sovrapposizioni */
-.callout-card--tr { top: 8%;  right: 4%; }
-.callout-card--mr { top: 53%; right: 4%; }
+/* Position presets — tutti top-based, più vicini al centro */
+.callout-card--tr { top: 15%;  right: 4%; }
+.callout-card--mr { top: 57%; right: 4%; }
 .callout-card--tc { top: 3%;  left: 44%; transform: translateX(-50%) scale(0.85); }
 .callout-card--tc.visible { transform: translateX(-50%) scale(1); }
 .callout-card--bc { bottom: 6%; left: 50%; transform: translateX(-50%) scale(0.85); }
 .callout-card--bc.visible { transform: translateX(-50%) scale(1); }
-.callout-card--ml { top: 8%; left: 4%; }
-.callout-card--bl { top: 53%; left: 4%; }
+.callout-card--ml { top: 15%; left: 4%; }
+.callout-card--bl { top: 57%; left: 4%; }
 
 /* Accent bar */
 .callout-accent {
@@ -794,10 +826,16 @@ body.hovering #cursor-ring { width: 48px; height: 48px; border-color: var(--c-go
 }
 
 .callout-field {
-  font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.12em;
-  color: var(--c-white); font-weight: 700; margin-bottom: 8px;
+  font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.1em;
+  color: var(--c-white); font-weight: 700; margin-bottom: 6px;
 }
-.callout-value { font-size: 0.75rem; color: rgba(240,240,240,0.7); line-height: 1.5; }
+.callout-value {
+  font-size: 0.68rem; color: rgba(240,240,240,0.7); line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .placeholder { font-style: italic; }
 
 /* Callout connector lines (drawn by JS via SVG overlay) */
@@ -986,7 +1024,52 @@ body.hovering #cursor-ring { width: 48px; height: 48px; border-color: var(--c-go
   font-family: var(--font-display); font-size: 0.85rem; font-weight: 700;
   letter-spacing: 0.1em; color: var(--c-white); margin-bottom: 10px;
 }
-.project-photo { margin-bottom: 10px; position: relative; }
+.project-photo { margin-bottom: 10px; position: relative; cursor: pointer; }
+
+/* Lente d'ingrandimento animata — invito al click */
+.project-photo::after {
+  content: '🔍';
+  position: absolute;
+  bottom: 7px;
+  right: 7px;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  font-size: 0.85rem;
+  background: rgba(10, 10, 20, 0.78);
+  border: 1px solid rgba(235, 192, 63, 0.4);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  animation: lens-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 5;
+  transition: transform 0.2s, background 0.2s;
+}
+.project-card:hover .project-photo::after {
+  transform: scale(1.15);
+  background: rgba(235, 192, 63, 0.15);
+  border-color: var(--c-gold);
+}
+@keyframes lens-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(235,192,63,0.4); opacity: 0.8; }
+  50%       { box-shadow: 0 0 0 6px rgba(235,192,63,0); opacity: 1; }
+}
+
+/* Overlay scuro su hover per dare senso di "cliccabile" */
+.project-photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.3s;
+  z-index: 4;
+  pointer-events: none;
+}
+.project-card:hover .project-photo::before {
+  background: rgba(0,0,0,0.25);
+}
+
 .project-img {
   width: 100%;
   aspect-ratio: 16/9;
@@ -1691,5 +1774,47 @@ body.lightbox-open #cursor-ring {
 }
 .t-val {
   color: var(--c-white);
+}
+
+/* Disable native scrolling when lightbox or overlay is open */
+html.lightbox-open,
+html:has(body.lightbox-open) {
+  overflow: hidden !important;
+  scroll-snap-type: none !important;
+}
+body.lightbox-open {
+  overflow: hidden !important;
+}
+
+/* Toast Notification for contacts */
+.contacts-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  background: rgba(13, 14, 30, 0.95);
+  border: 1px solid var(--c-gold);
+  border-left: 4px solid var(--c-gold);
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: var(--c-white);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 30px rgba(235, 192, 63, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s var(--ease-back);
+}
+.contacts-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.contacts-toast-icon {
+  color: var(--c-gold);
 }
 
